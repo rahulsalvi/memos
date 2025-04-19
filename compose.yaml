@@ -1,0 +1,23 @@
+name: memos
+
+include:
+  - path:
+      - ext/docker-compose-snippets/caddy.yaml
+      - ext/docker-compose-snippets/reverse_proxy_override.yaml
+
+services:
+  memos:
+    image: neosmemo/memos:stable
+    hostname: proxy_target
+    volumes:
+      - memos_data:/var/opt/memos
+    environment:
+      MEMOS_PORT: 8080
+    restart: unless-stopped
+
+volumes:
+  memos_data:
+
+secrets:
+  ts_authkey:
+    file: ./ts_authkey.txt
